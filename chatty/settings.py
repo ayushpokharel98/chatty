@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-&t5ik_q&589yunj(6gtroe4nktg(%604f$w65l=vb-^f=)@4e3'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["chatty-gnr8.onrender.com"]
 
