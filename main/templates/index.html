@@ -1,0 +1,181 @@
+{% extends "base.html" %}
+{% load static tailwind_tags %}
+{%block body%}
+<div class="flex flex-col sm:flex-row sm:gap-3">
+    <div class="sidebar bg-gray-300 sm:w-[3%] rounded-r-lg sm:h-[100vh] flex w-full flex-row sm:flex-col justify-center ">
+        <div class="essentials flex sm:flex-col flex-1 gap-4">
+            <div class="chats sm:mt-2 flex">
+                <svg id="makeappearchat" class="w-8 h-8 sm:w-full sm:h-full hover:cursor-pointer" title="Chats" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg" fill="none">
+                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                    <g id="SVGRepo_iconCarrier">
+                        <path stroke="#000000" stroke-linejoin="round" stroke-width="2"
+                            d="M9.88235 15C13.261 15 16 12.5376 16 9.5C16 6.46243 13.261 4 9.88235 4C6.50367 4 3.76471 6.46243 3.76471 9.5C3.76471 10.3179 3.96327 11.094 4.31942 11.7917L3 15L6.82353 14.2642C7.72335 14.7322 8.76806 15 9.88235 15Z">
+                        </path>
+                        <path stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M10.8042 18.1242C11.759 18.6784 12.8966 19 14.1176 19C15.2319 19 16.2766 18.7322 17.1765 18.2642L21 19L19.6806 15.7917C20.0367 15.094 20.2353 14.3179 20.2353 13.5C20.2353 12.2553 19.7754 11.1071 19 10.1854C18.251 9.29505 17.2076 8.61598 16 8.26526">
+                        </path>
+                        <circle r="1" fill="#000000" transform="matrix(-1 0 0 1 13 9.5)"></circle>
+                        <circle r="1" fill="#000000" transform="matrix(-1 0 0 1 10 9.5)"></circle>
+                        <circle r="1" fill="#000000" transform="matrix(-1 0 0 1 7 9.5)"></circle>
+                    </g>
+                </svg>
+                <div class="absolute hidden ml-12 bg-white rounded" id="toappearchat">
+                    <h1>Select a friend you want to chat with!</h1>
+                    {%for friend in friends%}
+                    <hr class="border-gray-300 border">
+                    <div class="flex gap-2 w-full p-2 items-center hover:bg-gray-300">
+                        <div class="flex gap-1 flex-1">
+                            <img src="{{friend.friend.avatar.url}}" alt="" class="w-6 h-6">
+                            <span>{{friend.friend.user.username}}</span>
+                        </div>
+                        <div class=" flex items-center">
+                            <button onclick="window.location.href='addchat/{{friend.friend.user.username}}'"><svg
+                                    class="w-6 h-6" fill="#000000" height="200px" width="200px" version="1.1"
+                                    id="Layer_1" xmlns="http://www.w3.org/2000/svg"
+                                    xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512"
+                                    enable-background="new 0 0 512 512" xml:space="preserve">
+                                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                    <g id="SVGRepo_iconCarrier">
+                                        <path
+                                            d="M257,0C115.6,0,1,85.9,1,192c0,75,57.5,139.8,141.1,171.4L86.3,512l160.5-128.4c3.4,0.1,6.7,0.4,10.2,0.4 c141.4,0,256-85.9,256-192C513,85.9,398.4,0,257,0z M385,213.3H278.3V320h-42.7V213.3H129v-42.7h106.7V64h42.7v106.7H385V213.3z">
+                                        </path>
+                                    </g>
+                                </svg></button>
+                        </div>
+                    </div>
+
+                    {%endfor%}
+                </div>
+            </div>
+            <div class="people flex sm:flex-row">
+                <svg id="clickadd" class="w-8 h-8 sm:w-full sm:h-full hover:cursor-pointer" title="People" viewBox="0 0 24 24"
+                    fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                    <g id="SVGRepo_iconCarrier">
+                        <path
+                            d="M18 7.16C17.94 7.15 17.87 7.15 17.81 7.16C16.43 7.11 15.33 5.98 15.33 4.58C15.33 3.15 16.48 2 17.91 2C19.34 2 20.49 3.16 20.49 4.58C20.48 5.98 19.38 7.11 18 7.16Z"
+                            stroke="#292D32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                        <path
+                            d="M16.9699 14.44C18.3399 14.67 19.8499 14.43 20.9099 13.72C22.3199 12.78 22.3199 11.24 20.9099 10.3C19.8399 9.59004 18.3099 9.35003 16.9399 9.59003"
+                            stroke="#292D32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                        <path
+                            d="M5.96998 7.16C6.02998 7.15 6.09998 7.15 6.15998 7.16C7.53998 7.11 8.63998 5.98 8.63998 4.58C8.63998 3.15 7.48998 2 6.05998 2C4.62998 2 3.47998 3.16 3.47998 4.58C3.48998 5.98 4.58998 7.11 5.96998 7.16Z"
+                            stroke="#292D32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                        <path
+                            d="M6.99994 14.44C5.62994 14.67 4.11994 14.43 3.05994 13.72C1.64994 12.78 1.64994 11.24 3.05994 10.3C4.12994 9.59004 5.65994 9.35003 7.02994 9.59003"
+                            stroke="#292D32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                        <path
+                            d="M12 14.63C11.94 14.62 11.87 14.62 11.81 14.63C10.43 14.58 9.32996 13.45 9.32996 12.05C9.32996 10.62 10.48 9.46997 11.91 9.46997C13.34 9.46997 14.49 10.63 14.49 12.05C14.48 13.45 13.38 14.59 12 14.63Z"
+                            stroke="#292D32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                        <path
+                            d="M9.08997 17.78C7.67997 18.72 7.67997 20.26 9.08997 21.2C10.69 22.27 13.31 22.27 14.91 21.2C16.32 20.26 16.32 18.72 14.91 17.78C13.32 16.72 10.69 16.72 9.08997 17.78Z"
+                            stroke="#292D32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </g>
+                </svg>
+                <div class="addpeople flex flex-col justify-center items-center align-middle absolute ml-12 w-64 bg-white hidden"
+                    id="clickaddappear">
+                    <div class="searchbar">
+                        <form id="getpeopleform" class="form relative" action="/search" method="GET">
+                            <button class="absolute left-2 -translate-y-1/2 top-1/2 p-1">
+                                <svg width="17" height="16" fill="none" xmlns="http://www.w3.org/2000/svg" role="img"
+                                    aria-labelledby="search" class="w-5 h-5 text-gray-700">
+                                    <path
+                                        d="M7.667 12.667A5.333 5.333 0 107.667 2a5.333 5.333 0 000 10.667zM14.334 14l-2.9-2.9"
+                                        stroke="currentColor" stroke-width="1.333" stroke-linecap="round"
+                                        stroke-linejoin="round"></path>
+                                </svg>
+                            </button>
+                            <input
+                                class="input rounded-full px-8 py-3 border-2 border-transparent focus:outline-none focus:border-blue-500 placeholder-gray-400 transition-all duration-300 shadow-md"
+                                name="search_query" placeholder="Search..." required type="text" />
+                            <button type="reset" class="absolute right-3 -translate-y-1/2 top-1/2 p-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-700" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12">
+                                    </path>
+                                </svg>
+                            </button>
+                        </form>
+                    </div>
+                    <hr class="mt-2 w-full border border-gray-300">
+                    <div class="results flex flex-col w-full">
+                        No results found!
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="extra mr-2">
+            <div class="absolute sm:relative rounded-sm border border-gray-300 w-56 bg-white ml-[-38%] mt-[8%] sm:ml-[10%] sm:mb-[15%] hidden"
+                id="toappear">
+                <h1 class="text-center font-bold">{{user}}</h1>
+                <div class="profile hover:bg-gray-200">
+                    <a href="/profile" class="flex gap-2 items-center justify-center"><svg class="w-5 h-5"
+                            viewBox="0 -0.5 21 21" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                            xmlns:xlink="http://www.w3.org/1999/xlink" fill="#000000">
+                            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                            <g id="SVGRepo_iconCarrier">
+                                <title>edit_text_bar [#1373]</title>
+                                <desc>Created with Sketch.</desc>
+                                <defs> </defs>
+                                <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                    <g id="Dribbble-Light-Preview" transform="translate(-339.000000, -800.000000)"
+                                        fill="#000000">
+                                        <g id="icons" transform="translate(56.000000, 160.000000)">
+                                            <path
+                                                d="M286.15,654 C285.5704,654 285.1,653.552 285.1,653 L285.1,647 C285.1,646.448 285.5704,646 286.15,646 C286.7296,646 287.2,645.552 287.2,645 C287.2,644.448 286.7296,644 286.15,644 L285.1,644 C283.93975,644 283,644.895 283,646 L283,654 C283,655.105 283.93975,656 285.1,656 L286.15,656 C286.7296,656 287.2,655.552 287.2,655 C287.2,654.448 286.7296,654 286.15,654 M301.9,644 L294.55,644 C293.9704,644 293.5,644.448 293.5,645 C293.5,645.552 293.9704,646 294.55,646 L300.85,646 C301.4296,646 301.9,646.448 301.9,647 L301.9,653 C301.9,653.552 301.4296,654 300.85,654 L294.55,654 C293.9704,654 293.5,654.448 293.5,655 C293.5,655.552 293.9704,656 294.55,656 L301.9,656 C303.06025,656 304,655.105 304,654 L304,646 C304,644.895 303.06025,644 301.9,644 M293.5,659 C293.5,659.552 293.0296,660 292.45,660 L288.25,660 C287.6704,660 287.2,659.552 287.2,659 C287.2,658.448 287.6704,658 288.25,658 L289.3,658 L289.3,642 L288.25,642 C287.6704,642 287.2,641.552 287.2,641 C287.2,640.448 287.6704,640 288.25,640 L292.45,640 C293.0296,640 293.5,640.448 293.5,641 C293.5,641.552 293.0296,642 292.45,642 L291.4,642 L291.4,658 L292.45,658 C293.0296,658 293.5,658.448 293.5,659"
+                                                id="edit_text_bar-[#1373]"> </path>
+                                        </g>
+                                    </g>
+                                </g>
+                            </g>
+                        </svg> <span class="flex-1">Profile</span> </a>
+                </div>
+                <div class="logout hover:bg-gray-200">
+                    <form action="/handleLogout" method="POST">
+                        {%csrf_token%}
+                        <button type="submit" class="flex gap-2 items-center justify-center"><svg class="w-5 h-5"
+                                fill="#000000" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                <g id="SVGRepo_iconCarrier">
+                                    <path
+                                        d="M3.651 16.989h17.326c0.553 0 1-0.448 1-1s-0.447-1-1-1h-17.264l3.617-3.617c0.391-0.39 0.391-1.024 0-1.414s-1.024-0.39-1.414 0l-5.907 6.062 5.907 6.063c0.196 0.195 0.451 0.293 0.707 0.293s0.511-0.098 0.707-0.293c0.391-0.39 0.391-1.023 0-1.414zM29.989 0h-17c-1.105 0-2 0.895-2 2v9h2.013v-7.78c0-0.668 0.542-1.21 1.21-1.21h14.523c0.669 0 1.21 0.542 1.21 1.21l0.032 25.572c0 0.668-0.541 1.21-1.21 1.21h-14.553c-0.668 0-1.21-0.542-1.21-1.21v-7.824l-2.013 0.003v9.030c0 1.105 0.895 2 2 2h16.999c1.105 0 2.001-0.895 2.001-2v-28c-0-1.105-0.896-2-2-2z">
+                                    </path>
+                                </g>
+                            </svg>Logout</button>
+                    </form>
+                </div>
+            </div>
+            <div id="toclick" class="profilepic hover:cursor-pointer">
+                <img src="{{profile.avatar.url}}" alt="" class="rounded-full w-8 h-8 sm:w-full sm:h-full">
+            </div>
+        </div>
+    </div>
+    <div class="w-full flex flex-col sm:flex-row sm:gap-2">
+        <div class="midbar w-full sm:h-[100vh] sm:overflow-y-scroll sm:overflow-x-hidden h-36 overflow-scroll sm:w-[40%] my-[1%] border-gray-300 border-2 rounded bg-white">
+            <div class="chatsection">
+                <h1 class="font-bold text-3xl">Chats</h1>
+                <hr class="w-full border border-gray-300">
+                {% for chat in chats %}
+                <li onclick="document.getElementById('minichat').src='/chat/{{chat.chat_name}}'" class="flex list-none gap-2 p-2 hover:bg-gray-300 hover:cursor-pointer">
+                    <img src="{{chat.chat_between.friend.avatar.url}}" class="w-8 h-8 roudned-full" alt="">
+                    {{chat.chat_between.friend.user.username}}
+                </li>
+                <hr class="w-full border border-gray-300">
+                {% endfor %}
+            </div>
+        </div>
+        <div class="remaining w-full sm:w-[55%] sm:my-[1%]">
+            <iframe id="minichat" src="" frameborder="0" class="w-full h-[78vh] sm:h-screen "></iframe>
+        </div>
+    </div>
+
+</div>
+
+<script src="{% static 'js/index.js' %}"></script>
+{%endblock body%}

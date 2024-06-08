@@ -1,0 +1,132 @@
+{% load static tailwind_tags %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat</title>
+    <style>
+        /* Hide scrollbar for Chrome, Safari and Opera */
+        .overflow-scroll::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Hide scrollbar for IE, Edge and Firefox */
+        .overflow-scroll {
+            -ms-overflow-style: none;
+            /* IE and Edge */
+            scrollbar-width: none;
+            scrollbar-width: 0px;
+            /* Firefox */
+        }
+
+        ::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+    {% tailwind_css %}
+</head>
+
+<body class="bg-white rounded">
+    <div class="top flex gap-2">
+        <img src="{{userchats.chat_between.friend.avatar.url}}" class="w-8 h-8 rounded-full" alt="" srcset="">
+        <p class="flex-1">{{userchats.chat_between.friend.user.username}}</p>
+    </div>
+    <hr class="w-full border border-gray-300">
+    <div class="flex flex-col w-full h-[92vh] overflow-hidden">
+        <div class="mid flex-1 w-full ">
+            <div id="chat-log" class="w-full h-[83vh] overflow-y-scroll">
+                {% for msg in msg %}
+                <div class="flex">
+                    <div class="flex-1">
+                        <p><strong>{{ msg.username }}:</strong> {{ msg.text }}</p>
+                    </div>
+                    <div>
+                        <small>{{ msg.timestamp }}</small></p>
+                    </div>
+                </div>
+                {% endfor %}
+                {% for message in messages %}
+
+                {% endfor %}
+            </div>
+        </div>
+        <div class="last flex">
+            <input id="chat-message-input" class="flex-1" type="text">
+            <input id="chat-message-submit" type="button"
+                class="p-1 bg-black text-white rounded-sm w-16 hover:cursor-pointer" value="Send">
+        </div>
+    </div>
+    {{ room_name|json_script:"room-name" }}
+    {{ user.username|json_script:"user-username" }}
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const chatLog = document.querySelector('#chat-log');
+            chatLog.scrollTop = chatLog.scrollHeight;
+        });
+        function getFormattedTimestamp() {
+            const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            
+            const currentDate = new Date();
+            const month = months[currentDate.getMonth()];
+            const day = currentDate.getDate();
+            let hours = currentDate.getHours();
+            const minutes = currentDate.getMinutes();
+            const ampm = hours >= 12 ? 'p.m.' : 'a.m.';
+            hours = hours % 12;
+            hours = hours ? hours : 12; // Handle midnight
+            const formattedTime = `${hours}:${minutes < 10 ? '0' + minutes : minutes} ${ampm}`;
+            
+            return `${month} ${day}, ${currentDate.getFullYear()}, ${formattedTime}`;
+        }
+        const roomName = JSON.parse(document.getElementById('room-name').textContent);
+        const username = JSON.parse(document.getElementById('user-username').textContent);
+        const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+        const chatSocket = new WebSocket(
+            protocol
+            + '//'
+            + window.location.host
+            + '/ws/chat/'
+            + roomName
+            + '/'
+        );
+
+        chatSocket.onmessage = function (e) {
+            const data = JSON.parse(e.data);
+            const message = `<div class="flex">
+                <div class="flex-1">
+                    <p><strong>${data.username}:</strong> ${data.message}</p>
+                </div>
+                <div>
+                    <small>${getFormattedTimestamp()}</small>
+                </div>
+            `
+            document.querySelector('#chat-log').innerHTML += message;
+        };
+
+        chatSocket.onclose = function (e) {
+            console.error('Chat socket closed unexpectedly');
+        };
+
+        document.querySelector('#chat-message-input').focus();
+        document.querySelector('#chat-message-input').onkeyup = function (e) {
+            if (e.key === 'Enter') {
+                document.querySelector('#chat-message-submit').click();
+            }
+        };
+
+        document.querySelector('#chat-message-submit').onclick = function (e) {
+            const messageInputDom = document.querySelector('#chat-message-input');
+            const message = messageInputDom.value;
+            chatSocket.send(JSON.stringify({
+                'message': message,
+                'username': username
+            }));
+            messageInputDom.value = '';
+        };
+    </script>
+    <script src="{% static 'js/chats.js' %}"></script>
+</body>
+
+</html>

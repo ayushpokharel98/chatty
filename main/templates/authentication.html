@@ -1,0 +1,143 @@
+{% load static tailwind_tags %}
+{% load widget_tweaks %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Chatty</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="shortcut icon" href="{% static 'img/logo.png' %}" type="image/x-icon">
+    <style>
+        #signup {
+            position: absolute;
+            transform: translateX(999%);
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .fade-in { animation: fadeIn 1s ease-out; }
+        @keyframes slideIn {
+            from { transform: translateX(999%); }
+            to { transform: translateX(0%); }
+        }
+        @keyframes slideInReverse {
+            from { transform: translateX(0%); }
+            to { transform: translateX(-999%); }
+        }
+        @keyframes slideOut {
+            from { transform: translateX(0%); }
+            to { transform: translateX(-999%); }
+        }
+        @keyframes slideOutReverse {
+            from { transform: translateX(-999%); }
+            to { transform: translateX(0%); }
+        }
+        .slideIn { animation: slideIn 1.5s ease-in-out; animation-fill-mode: forwards; }
+        .slideOut { animation: slideOut 1.5s ease-in-out; animation-fill-mode: forwards; }
+        .slideInReverse { animation: slideIn 1.5s ease-in-out; animation-fill-mode: forwards; }
+        .slideOutReverse { animation: slideOut 1.5s ease-in-out; animation-fill-mode: forwards; }
+    </style>
+    {% tailwind_css %}
+</head>
+<body class="bg-gray-600 overflow-hidden font-normal fade-in">
+    {% if messages %}
+        <div id="error-message" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+            <span class="block sm:inline"> 
+                {% for message in messages %}
+                    {{ message }}
+                {% endfor %}
+            </span>
+            <span class="absolute top-0 bottom-0 right-0 px-4 py-3">
+                <svg id="close-button" class="fill-current h-6 w-6 text-red-500" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                    <title>Close</title>
+                    <path d="M14.348 14.849a.75.75 0 01-1.06 0L10 11.56l-3.289 3.288a.75.75 0 01-1.06-1.06l3.288-3.289-3.288-3.288a.75.75 0 111.06-1.06L10 9.44l3.289-3.288a.75.75 0 011.06 1.06L11.56 10l3.288 3.289a.75.75 0 010 1.06z"/>
+                </svg>
+            </span>
+        </div>
+    {% endif %}
+
+    <div class="flex justify-center items-center">
+        <div id="login">
+            <div class="flex flex-col sm:flex-row">
+                <div class="login w-96 h-96 bg-white flex justify-center items-center align-middle flex-col mt-20 sm:mt-56 ">
+                    <h1 class="text-center font-bold text-3xl text-cyan-500">Login</h1>
+                    <form action="/handlelogin" method="POST" class="flex justify-center w-56 gap-2 flex-col">
+                        {% csrf_token %}
+                        {% render_field form.username placeholder="Username..." %}
+                        {% render_field form.password placeholder="Password..." %}
+                        <button type="submit" class="bg-black text-white p-2 hover:animate-pulse">Login</button>
+                    </form>
+                    <p>Don't have an account? <button id="signup-call" class="signup-call underline">Signup!</button></p>
+                    <hr class="bg-black w-full">
+                    <div class="others flex flex-col w-56">
+                        <h1 class="text-center">OR</h1>
+                        <button class="bg-white border-solid border-gray-300 border-2 rounded-sm mb-1 p-2 flex justify-center items-center gap-1">Login
+                            with Google <img src="{%static 'img/google.png' %}" alt="" class="w-6 h-6"></button>
+                        <button class="text-white bg-[rgb(66,103,178)] rounded-sm mb-1 p-2 flex justify-center items-center gap-1">Login
+                            with Facebook <img src="{%static 'img/facebook.png' %}" alt="" class="w-6 h-6"></button>
+                    </div>
+                </div>
+                <div class="login text-white w-full sm:w-56 h-56 sm:h-96 bg-black rounded-r-lg flex justify-center items-center align-middle flex-col sm:mt-56">
+                    <h1 class="font-bold text-2xl">Welcome Back</h1>
+                    <h1 class="font-bold text-xl">To</h1>
+                    <h1 class="font-bold text-2xl animate-pulse">CHATTY!</h1>
+                </div>
+            </div>
+        </div>
+        <div id="signup" class="">
+            <div class="flex flex-col sm:flex-row">
+                <div class="w-96 h-96 bg-white flex justify-center items-center align-middle flex-col mt-20 sm:mt-56 ">
+                    <h1 class="text-center font-bold text-3xl text-cyan-500">Signup</h1>
+                    <form action="handleSignup" method="post" class="flex justify-center w-56 gap-2 flex-col">
+                        {% csrf_token %}
+                        {% render_field form2.username placeholder="Username..." %}
+                        {% render_field form2.email placeholder="Email..." %}
+                        {% render_field form2.password placeholder="Password..." %}
+                        <button type="submit" class="bg-black text-white p-2 hover:animate-pulse">Signup</button>
+                    </form>
+                    <p>Already have an account? <button id="login-call" class="login-call underline">Login!</button></p>
+                    <hr class="bg-black w-full">
+                    <div class="others flex flex-col w-56">
+                        <h1 class="text-center">OR</h1>
+                        <button class="bg-white border-solid border-gray-300 border-2 rounded-sm mb-1 p-2 flex justify-center items-center gap-1">Signup
+                            with Google <img src="{%static 'img/google.png' %}" alt="" class="w-6 h-6"></button>
+                        <button class="text-white bg-[rgb(66,103,178)] rounded-sm mb-1 p-2 flex justify-center items-center gap-1">Signup
+                            with Facebook <img src="{%static 'img/facebook.png' %}" alt="" class="w-6 h-6"></button>
+                    </div>
+                </div>
+                <div class="text-white w-full sm:w-56 h-56 sm:h-96 bg-black rounded-l-lg flex justify-center items-center align-middle flex-col sm:mt-56">
+                    <h1 class="font-bold text-2xl">Welcome</h1>
+                    <h1 class="font-bold text-xl">To</h1>
+                    <h1 class="font-bold text-2xl animate-pulse">CHATTY!</h1>
+                    <h1 class="text-xs">Communicate with your loved ones!</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        let btn_signup = document.getElementById("signup-call");
+        let btn_login = document.getElementById("login-call");
+        let login = document.getElementById("login");
+        let signup = document.getElementById("signup");
+        btn_signup.addEventListener("click", function() {
+            login.classList.remove("slideOut", "slideInReverse");
+            signup.classList.remove("slideIn", "slideOutReverse");
+            signup.classList.add("slideIn");
+            login.classList.add("slideOut");
+            login.querySelector("form").reset();
+        });
+        btn_login.addEventListener("click", function() {
+            login.classList.remove("slideOutReverse");
+            signup.classList.remove("slideInReverse");
+            login.classList.add("slideInReverse");
+            signup.classList.add("slideOutReverse");
+            signup.querySelector("form").reset();
+        });
+		document.getElementById('close-button').addEventListener('click', function() {
+            document.getElementById('error-message').style.display = 'none';
+        });
+    </script>
+</body>
+</html>
