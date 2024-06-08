@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: chatty
+    env: python
+    plan: free
+    buildCommand: |
+      apt-get update && \
+      apt-get install -y build-essential python3-dev && \
+      pip install -r requirements.txt
+    startCommand: gunicorn chatty.wsgi:application --bind 0.0.0.0:8000
