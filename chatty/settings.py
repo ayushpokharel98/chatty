@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-&t5ik_q&589yunj(6gtroe4nktg(%604f$w65l=vb-^f=)@4e3
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ["chatty-2k79.onrender.com"]
+ALLOWED_HOSTS = ["chatty-gnr8.onrender.com"]
 
 import os
 import dj_database_url
